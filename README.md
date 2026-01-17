@@ -1,29 +1,46 @@
 # Enterprise Network & Systems (Cisco + Windows Server)
 
-A small-enterprise infrastructure build for “Margielos” focused on segmentation, redundancy, secure administration, and documented validation.  
-Core features include multi-VLAN routing, redundant default gateways (HSRP), centralized DHCP via relay to domain controllers, and an ASA-based Internet edge.
+Small-enterprise infrastructure build for **Margielos** focused on **segmentation, high availability, secure administration, and documented validation**.
 
-## Highlights (What this demonstrates)
-- **Network segmentation** using departmental VLANs plus dedicated **Servers** and **Infrastructure Management** networks.
-- **High availability at the default gateway** using **HSRPv2** with **MD5 authentication** and **interface tracking** to support failover when the primary path degrades.
-- **Inter-VLAN routing (router-on-a-stick)** using 802.1Q subinterfaces across the core routers.
-- **Centralized DHCP services** with `ip helper-address` to redundant domain controllers (DC01/DC02) for address assignment across VLANs.
-- **Secure Internet edge** using ASA firewalls for NAT, with routers forwarding Internet-bound traffic via default routes toward the firewall transit networks.
-- **Traffic control between VLANs** using router ACLs to enforce segmentation requirements (example: limiting Warehouse/Production lateral access and keeping Guest Internet-only).
+**Tech:** Cisco IOS (routing/switching), VLANs/802.1Q, HSRPv2, LACP EtherChannel, ACLs, Cisco ASA (NAT), Windows Server (AD DS/DNS/DHCP), Proxmox
+
+## Project at a glance
+- **10 VLANs + VLAN 999 (blackhole/native)** across 2 core switches
+- **Redundant default gateway:** HSRPv2 across **2 routers**
+- **Internet edge:** ASA performing NAT; routers forward default route to firewall transit networks
+- **Services:** Dual DCs (AD DS/DNS/DHCP) supporting multi-VLAN DHCP via relay
+- **Documentation-first:** diagrams, IP plan, runbooks, validation outputs
+
+## What this demonstrates
+- Built **departmental segmentation** + dedicated **Servers (VLAN 80)** and **Infra Mgmt (VLAN 70)** networks.
+- Implemented **HSRPv2** with authentication + interface tracking for gateway failover.
+- Delivered **inter-VLAN routing** via 802.1Q subinterfaces (router-on-a-stick).
+- Centralized **DHCP** using `ip helper-address` to redundant DCs (DC01/DC02).
+- Implemented **LACP EtherChannel** between core switches for bandwidth + link resiliency.
+- Enforced traffic policy using **router ACLs** (Guest internet-only; restricted east-west for select VLANs).
+
+## Security controls implemented
+- **SSH-only management** and restricted management access (VLAN 70 / mgmt subnet)
+- **Unused ports** placed in **VLAN 999** and administratively shut down
+- **STP edge protections:** PortFast + BPDU Guard on access ports
+- **Port-security** (sticky MAC / violation restrict) on key access interfaces
 
 ---
 
 ## Topology
-- **Logical topology:**  
-  <img width="1083" height="510" alt="LOGICAL TOPOLOGY" src="https://github.com/user-attachments/assets/2e02e865-167a-4069-91a5-63b447439a07" />
+**Logical topology:**  
+<img width="1083" height="510" alt="LOGICAL TOPOLOGY" src="https://github.com/user-attachments/assets/b6a12365-f87f-4a1d-a38d-01b7f931966a" />
 
-- **Physical topology:**  
-  <img width="1782" height="1021" alt="Physical Topology drawio" src="https://github.com/user-attachments/assets/2fa99fb8-df84-4060-9282-b5004ed8445f" />
+
+<details>
+  <summary><strong>Physical topology</strong></summary>
+  <br/>
+  <img width="1782" height="1021" alt="Physical Topology drawio" src="https://github.com/user-attachments/assets/08cb9a5d-1d92-43af-b869-24a372e7a831" />
+</details>
 
 ---
 
 ## VLANs and IP Plan (Summary)
-
 | VLAN | Name              | Subnet            | Default Gateway (VIP) |
 |------|-------------------|-------------------|------------------------|
 | 10   | SALES_CS          | 192.168.10.0/24   | 192.168.10.1           |
@@ -38,45 +55,45 @@ Core features include multi-VLAN routing, redundant default gateways (HSRP), cen
 | 90   | GUEST             | 192.168.90.0/24   | 192.168.90.1           |
 | 999  | BLACKHOLE / Native| 192.168.199.0/24  | N/A                    |
 
-Full IP addressing conventions, DHCP scope ranges, and server reservations are documented in `docs/Network_Documentation.md`.
+Full IP conventions, DHCP scope ranges, and reservations: `docs/Network_Documentation.md`
 
 ---
 
-## How traffic flows (High level)
-1. **Clients use the HSRP virtual IP (.1)** in their VLAN as the default gateway (example: VLAN 10 uses 192.168.10.1).
-2. **The active HSRP router** forwards traffic based on destination:
-   - **Internal traffic:** routed directly to the destination VLAN via the router subinterfaces.
-   - **Server access:** routed toward VLAN 80 (Servers) as required by the segmentation policy.
-   - **Internet-bound traffic:** forwarded via the router’s **default route** to the ASA transit network, where the ASA performs **NAT** and forwards to the Internet.
+## Validation
+- **HSRP:** `show standby brief` (active/standby correct per VLAN)
+- **Trunks/EtherChannel:** `show etherchannel summary`, `show interfaces trunk`
+- **Segmentation:** ping tests (Guest → blocked internal, allowed Internet)
+- **DHCP relay:** client obtains IP/gateway/DNS on each VLAN via DC01/DC02
+
+Evidence outputs: `evidence/`
 
 ---
 
-## Documentation
+## Repo structure
+- `docs/Network_Documentation.md` – full design + IP plan
+- `docs/validation.md` – test plan + results
+- `docs/runbook.md` – operations & troubleshooting
+- `evidence/` – raw show-commands + screenshots
 
-### Baseline (Completed Build)
-- Full documentation: `docs/Network_Documentation.md`
-- Validation report: `docs/validation.md`
-- Operations runbook: `docs/runbook.md`
-- Evidence outputs (raw command outputs): `evidence/`
+<details>
+  <summary><strong>Packet Tracer extension (in progress)</strong></summary>
+  <br/>
 
-### Extension (Packet Tracer Replica)
-- Extension overview: `extension-packet-tracer/README.md`
-- Changes from baseline: `extension-packet-tracer/docs/changes-from-baseline.md`
-- Extension validation: `extension-packet-tracer/docs/validation.md`
-- Packet Tracer file: `extension-packet-tracer/packet-tracer/enterprise-network-system.pkt`
+  The baseline build was implemented on real Cisco/VM infrastructure (IOS + Windows Server + ASA).  
+  This **Packet Tracer extension** is a **planned replica** used to demonstrate and validate *additional network controls* (“extras”) **without changing the completed baseline environment**.
 
----
+  ## Roadmap (Enhancements) 
+  ### Packet Tracer extension (network controls) 
+  - Implement centralized DHCP in Packet Tracer (Server-PT/router DHCP) and validate **DHCP relay** across VLANs.
+  - Implement **DHCP Snooping** with a clear trust boundary (trusted trunk/uplink, untrusted access).
+  - Implement **Dynamic ARP Inspection (DAI)** using DHCP Snooping bindings and validate against ARP spoofing.
+  - Add a basic **QoS policy** (classification + prioritization) and document verification outputs.
+  - Add a simulated **branch LAN** to meaningfully evaluate **OSPF** route exchange and convergence.
 
-## Notes / Limitations
-- This build uses **HSRP for first-hop redundancy** and **static default routing** toward the firewall (no internal OSPF/EIGRP in the baseline).
-- The Packet Tracer extension is used to replicate the environment and explore enhancements without modifying the completed baseline build.
+  **Where it will live**
+  - `extension-packet-tracer/README.md` – extension overview + scope
+  - `extension-packet-tracer/docs/changes-from-baseline.md` – what’s different vs baseline
+  - `extension-packet-tracer/docs/validation.md` – test plan + results (extension)
+  - `extension-packet-tracer/packet-tracer/enterprise-network-system.pkt` – Packet Tracer file
 
----
-
-## Roadmap (Enhancements)
-- Packet Tracer replica for a shareable demo environment and repeatable testing.
-- Add a simulated **branch office** and evaluate **dynamic routing (OSPF)** and/or site-to-site connectivity as an enhancement.
-- Implement **DHCP Snooping** and define a clear trust boundary (trusted trunk/uplink ports, untrusted access ports).
-- Implement **Dynamic ARP Inspection (DAI)** using DHCP Snooping bindings and validate mitigation of ARP spoofing attempts.
-- Add a basic **QoS policy** (classification and prioritization) and document the trust boundary and verification outputs.
-- Expand validation coverage with test cases and evidence (HSRP failover behavior, EtherChannel resiliency, ACL hit counts, DHCP relay lease verification, Snooping/DAI verification).
+</details>
