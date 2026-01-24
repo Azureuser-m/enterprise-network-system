@@ -8,7 +8,7 @@ ASA01# show run
 ASA Version 9.8(2)
 !
 hostname ASA01
-domain-name margielos.local
+domain-name ict.margielos.uk
 enable password <REDACTED>
 names
 ip local pool VPN_POOL 10.10.10.10-10.10.10.50 mask 255.255.255.0
@@ -70,7 +70,7 @@ interface Management1/1
 !
 ftp mode passive
 dns server-group DefaultDNS
- domain-name margielos.local
+ domain-name ict.margielos.uk
 object network OBJ_INSIDE_ALL
  subnet 192.168.0.0 255.255.0.0
 object network OBJ_INSIDE_ALL_BACKUP
@@ -144,7 +144,7 @@ group-policy GP_ANYCONNECT attributes
  vpn-tunnel-protocol ssl-client
  split-tunnel-policy tunnelspecified
  split-tunnel-network-list value VPN_SPLIT
- default-domain value margielos.local
+ default-domain value ict.margielos.uk
 dynamic-access-policy-record DfltAccessPolicy
 username <User-1> password <REDACTED> privilege 0
 username <User-1> attributes
