@@ -1,0 +1,14 @@
+R2#show standby brief
+                     P indicates configured to preempt.
+                     |
+Interface   Grp  Pri P State   Active          Standby         Virtual IP
+Gi0/0/1.10  10   100 P Standby 192.168.10.2    local           192.168.10.1
+Gi0/0/1.20  20   100 P Standby 192.168.20.2    local           192.168.20.1
+Gi0/0/1.30  30   100 P Standby 192.168.30.2    local           192.168.30.1
+Gi0/0/1.40  40   100 P Standby 192.168.40.2    local           192.168.40.1
+Gi0/0/1.50  50   100 P Standby 192.168.50.2    local           192.168.50.1
+Gi0/0/1.60  60   100 P Standby 192.168.60.2    local           192.168.60.1
+Gi0/0/1.70  70   100 P Standby 192.168.70.2    local           192.168.70.1
+Gi0/0/1.80  80   100 P Standby 192.168.80.2    local           192.168.80.1
+Gi0/0/1.85  85   100 P Standby 192.168.85.2    local           192.168.85.1
+Gi0/0/1.90  90   100 P Standby 192.168.90.2    local           192.168.90.1
