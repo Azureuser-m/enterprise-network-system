@@ -1,0 +1,337 @@
+R1#show run
+Building configuration...
+
+
+Current configuration : 7675 bytes
+!
+! Last configuration change at 21:21:09 UTC Thu Dec 11 2025
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+security passwords min-length 10
+enable secret 5 <REDACTED>
+!
+no aaa new-model
+memory-size iomem 15
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip domain name margielos.local
+ip cef
+login block-for 60 attempts 5 within 60
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+cts logging verbose
+!
+!
+voice-card 0
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid CISCO2901/K9 sn FGL171724J3
+license boot module c2900 technology-package securityk9
+license boot module c2900 technology-package uck9
+!
+!
+username <REDACTED> secret 5 <REDACTED>
+!
+redundancy
+!
+!
+!
+!
+no cdp run
+!
+track 1 interface GigabitEthernet0/0 line-protocol
+!
+ip ssh version 2
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Embedded-Service-Engine0/0
+ no ip address
+ shutdown
+!
+interface GigabitEthernet0/0
+ description R1-to-ASA transit
+ ip address 192.168.254.1 255.255.255.252
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1
+ description TRUNK to SW1 G0/1
+ no ip address
+ duplex auto
+ speed auto
+!
+interface GigabitEthernet0/1.10
+ description VLAN 10 SALES_CS
+ encapsulation dot1Q 10
+ ip address 192.168.10.2 255.255.255.0
+ ip helper-address 192.168.80.11
+ ip helper-address 192.168.80.12
+ standby version 2
+ standby 10 ip 192.168.10.1
+ standby 10 priority 110
+ standby 10 preempt
+ standby 10 authentication md5 key-string 7 <REDACTED>
+ standby 10 track 1 decrement 20
+!
+interface GigabitEthernet0/1.20
+ description VLAN 20 WAREHOUSE
+ encapsulation dot1Q 20
+ ip address 192.168.20.2 255.255.255.0
+ ip access-group WAREHOUSE_IN in
+ ip helper-address 192.168.80.11
+ ip helper-address 192.168.80.12
+ standby version 2
+ standby 20 ip 192.168.20.1
+ standby 20 priority 110
+ standby 20 preempt
+ standby 20 authentication md5 key-string 7 <REDACTED>
+ standby 20 track 1 decrement 20
+!
+interface GigabitEthernet0/1.30
+ description VLAN 30 HR_MGMT
+ encapsulation dot1Q 30
+ ip address 192.168.30.2 255.255.255.0
+ ip helper-address 192.168.80.11
+ ip helper-address 192.168.80.12
+ standby version 2
+ standby 30 ip 192.168.30.1
+ standby 30 priority 110
+ standby 30 preempt
+ standby 30 authentication md5 key-string 7 <REDACTED>
+ standby 30 track 1 decrement 20
+!
+interface GigabitEthernet0/1.40
+ description VLAN 40 IT
+ encapsulation dot1Q 40
+ ip address 192.168.40.2 255.255.255.0
+ ip helper-address 192.168.80.11
+ ip helper-address 192.168.80.12
+ standby version 2
+ standby 40 ip 192.168.40.1
+ standby 40 priority 110
+ standby 40 preempt
+ standby 40 authentication md5 key-string 7 <REDACTED>
+ standby 40 track 1 decrement 20
+!
+interface GigabitEthernet0/1.50
+ description VLAN 50 MARKETING_ECOM
+ encapsulation dot1Q 50
+ ip address 192.168.50.2 255.255.255.0
+ ip helper-address 192.168.80.11
+ ip helper-address 192.168.80.12
+ standby version 2
+ standby 50 ip 192.168.50.1
+ standby 50 priority 110
+ standby 50 preempt
+ standby 50 authentication md5 key-string 7 <REDACTED>
+ standby 50 track 1 decrement 20
+!
+interface GigabitEthernet0/1.60
+ description VLAN 60 PROD_FLOOR
+ encapsulation dot1Q 60
+ ip address 192.168.60.2 255.255.255.0
+ ip access-group PROD_IN in
+ ip helper-address 192.168.80.11
+ ip helper-address 192.168.80.12
+ standby version 2
+ standby 60 ip 192.168.60.1
+ standby 60 priority 110
+ standby 60 preempt
+ standby 60 authentication md5 key-string 7 <REDACTED>
+ standby 60 track 1 decrement 20
+!
+interface GigabitEthernet0/1.70
+ description VLAN 70 INFRA_MGMT
+ encapsulation dot1Q 70
+ ip address 192.168.70.2 255.255.255.0
+ standby version 2
+ standby 70 ip 192.168.70.1
+ standby 70 priority 110
+ standby 70 preempt
+ standby 70 authentication md5 key-string 7 <REDACTED>
+ standby 70 track 1 decrement 20
+!
+interface GigabitEthernet0/1.80
+ description VLAN 80 SERVERS
+ encapsulation dot1Q 80
+ ip address 192.168.80.2 255.255.255.0
+ standby version 2
+ standby 80 ip 192.168.80.1
+ standby 80 priority 110
+ standby 80 preempt
+ standby 80 authentication md5 key-string 7 <REDACTED>
+ standby 80 track 1 decrement 20
+!
+interface GigabitEthernet0/1.85
+ description VLAN 85 FINANCE
+ encapsulation dot1Q 85
+ ip address 192.168.85.2 255.255.255.0
+ ip helper-address 192.168.80.11
+ ip helper-address 192.168.80.12
+ standby version 2
+ standby 85 ip 192.168.85.1
+ standby 85 priority 110
+ standby 85 preempt
+ standby 85 authentication md5 key-string 7 <REDACTED>
+ standby 85 track 1 decrement 20
+!
+interface GigabitEthernet0/1.90
+ description VLAN 90 GUEST
+ encapsulation dot1Q 90
+ ip address 192.168.90.2 255.255.255.0
+ ip access-group GUEST_IN in
+ ip helper-address 192.168.80.11
+ ip helper-address 192.168.80.12
+ standby version 2
+ standby 90 ip 192.168.90.1
+ standby 90 priority 110
+ standby 90 preempt
+ standby 90 authentication md5 key-string 7 <REDACTED>
+ standby 90 track 1 decrement 20
+!
+interface GigabitEthernet0/1.999
+ description Native - Blackhole VLAN
+ encapsulation dot1Q 999 native
+!
+interface Serial0/0/0
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/0/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+ip forward-protocol nd
+!
+no ip http server
+no ip http secure-server
+!
+ip route 0.0.0.0 0.0.0.0 192.168.254.2
+!
+ip access-list standard MGMT_VTY
+ permit 192.168.70.0 0.0.0.255
+ permit 10.10.10.0 0.0.0.255
+ deny   any
+!
+ip access-list extended GUEST_IN
+ remark Allow DHCP from guests to be relayed
+ permit udp any eq bootpc any eq bootps
+ remark Block guest from any internal 192.168.x.x networks
+ deny   ip 192.168.90.0 0.0.0.255 192.168.0.0 0.0.255.255
+ remark Allow guest to go to the Internet
+ permit ip 192.168.90.0 0.0.0.255 any
+ip access-list extended PROD_IN
+ remark 5 Allow DHCP (bootpc->bootps) from Prod_Floor VLAN
+ permit udp any eq bootpc any eq bootps
+ remark Allow Prod_Floor -> Servers
+ permit ip 192.168.60.0 0.0.0.255 192.168.80.0 0.0.0.255
+ remark Block Prod_Floor -> all other internal VLANs
+ deny   ip 192.168.60.0 0.0.0.255 192.168.0.0 0.0.255.255
+ remark Allow Prod_Floor -> Internet
+ permit ip 192.168.60.0 0.0.0.255 any
+ip access-list extended WAREHOUSE_IN
+ remark 5 Allow DHCP (bootpc->bootps) from Warehouse VLAN
+ permit udp any eq bootpc any eq bootps
+ remark Allow Warehouse -> Servers
+ permit ip 192.168.20.0 0.0.0.255 192.168.80.0 0.0.0.255
+ remark Block Warehouse -> all other internal VLANs
+ deny   ip 192.168.20.0 0.0.0.255 192.168.0.0 0.0.255.255
+ remark Allow Warehouse -> Internet
+ permit ip 192.168.20.0 0.0.0.255 any
+!
+!
+!
+!
+control-plane
+!
+ !
+ !
+ !
+ !
+!
+mgcp behavior rsip-range tgcp-only
+mgcp behavior comedia-role none
+mgcp behavior comedia-check-media-src disable
+mgcp behavior comedia-sdp-force disable
+!
+mgcp profile default
+!
+!
+!
+!
+!
+!
+!
+gatekeeper
+ shutdown
+!
+!
+banner motd ^CUnauthorized access is prohibited^C
+!
+line con 0
+ password 7 <REDACTED>
+ logging synchronous
+ login
+line aux 0
+line 2
+ no activation-character
+ no exec
+ transport preferred none
+ transport output pad telnet rlogin lapb-ta mop udptn v120 ssh
+ stopbits 1
+line vty 0 4
+ access-class MGMT_VTY in
+ login local
+ transport input ssh
+!
+scheduler allocate 20000 1000
+!
+end
+
+R1#
