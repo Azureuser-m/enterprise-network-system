@@ -1,0 +1,293 @@
+SW1#show run
+Building configuration...
+
+Current configuration : 6918 bytes
+!
+! Last configuration change at 00:13:14 UTC Mon Mar 1 1993
+!
+version 15.2
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname SW1
+!
+boot-start-marker
+boot-end-marker
+!
+enable secret 5 <REDACTED>
+!
+username <REDACTED> secret 5 <REDACTED>
+no aaa new-model
+system mtu routing 1500
+!
+!
+!
+!
+!
+!
+!
+ip dhcp snooping database flash:dhcp_snoop.db
+ip dhcp snooping database write-delay 60
+no ip dhcp snooping verify mac-address 
+no ip domain-lookup
+ip domain-name margielos.local
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+no cdp run
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ description Etherchannel to SW2
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,40,50,60,70,80,85,90
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ ip dhcp snooping trust
+!
+interface FastEthernet0/1
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,40,50,60,70,80,85,90
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ channel-protocol lacp
+ channel-group 1 mode active
+ ip dhcp snooping trust
+!
+interface FastEthernet0/2
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,40,50,60,70,80,85,90
+ switchport mode trunk
+ switchport nonegotiate
+ ip arp inspection trust
+ channel-protocol lacp
+ channel-group 1 mode active
+ ip dhcp snooping trust
+!
+interface FastEthernet0/3
+ description DC01 PORT
+ switchport access vlan 80
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation  restrict
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 74d0.2b26.fcb7
+ switchport port-security
+ ip arp inspection trust
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip dhcp snooping trust
+!
+interface FastEthernet0/4
+ switchport access vlan 80
+ switchport mode access
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+ ip dhcp snooping trust
+!
+interface FastEthernet0/5
+ description AP-1 port on VLAN 10 might create vlan 120 corp wifi later
+ switchport access vlan 10
+ ip arp inspection trust
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/6
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation  restrict
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/7
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation  restrict
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/8
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation  restrict
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/9
+ switchport access vlan 30
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation  restrict
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky <REDACTED>
+ switchport port-security mac-address sticky <REDACTED>
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/10
+ switchport access vlan 30
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation  restrict
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/11
+ switchport access vlan 40
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation  restrict
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/12
+ switchport access vlan 40
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation  restrict
+ switchport port-security mac-address sticky
+ switchport port-security
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/13
+ description interface administratively shutdown
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+!
+interface FastEthernet0/14
+ description interface administratively shutdown
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+!
+interface FastEthernet0/15
+ description interface administratively shutdown
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+!
+interface FastEthernet0/16
+ description interface administratively shutdown
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+!
+interface FastEthernet0/17
+ description interface administratively shutdown
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+!
+interface FastEthernet0/18
+ description interface administratively shutdown
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+!
+interface FastEthernet0/19
+ description interface administratively shutdown
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+!
+interface FastEthernet0/20
+ description interface administratively shutdown
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+!
+interface FastEthernet0/21
+ description interface administratively shutdown
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+!
+interface FastEthernet0/22
+ description interface administratively shutdown
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+!
+interface FastEthernet0/23
+ description interface administratively shutdown
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+!
+interface FastEthernet0/24
+ description interface administratively shutdown
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+!
+interface GigabitEthernet0/1
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,40,50,60,70,80,85,90
+ switchport mode trunk
+ ip arp inspection trust
+ ip dhcp snooping trust
+!
+interface GigabitEthernet0/2
+ description interface administratively shutdown
+ switchport access vlan 999
+ switchport mode access
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan10
+ no ip address
+!
+interface Vlan70
+ ip address 192.168.70.5 255.255.255.0
+!
+ip default-gateway 192.168.70.1
+no ip http server
+no ip http secure-server
+ip ssh version 2
+!
+no vstack
+banner motd ^CUnauthorized access is prohibited^C
+!
+line con 0
+ password 7 <REDACTED>
+ logging synchronous
+ login
+line vty 0 4
+ login local
+ transport input ssh
+line vty 5 15
+ login
+ transport input none
+!
+end
