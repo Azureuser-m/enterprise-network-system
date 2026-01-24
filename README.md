@@ -1,36 +1,36 @@
-# Enterprise Network & Systems (Cisco + Windows Server)
+# Enterprise Network & Systems (Cisco IOS + ASA + Windows Server)
 
-Small-enterprise infrastructure build for **Margielos** focused on **segmentation, high availability, secure administration, and documented validation**.
+Self-directed small enterprise infrastructure build for **Margielos**, focused on segmentation, high availability, secure administration, and repeatable validation.
 
-**Tech:** Cisco IOS (routing/switching), VLANs/802.1Q, HSRPv2, LACP EtherChannel, ACLs, Cisco ASA (NAT), Windows Server (AD DS/DNS/DHCP), Proxmox
+## Documentation
+- Full design and implementation notes: [docs/Network_Documentation.md](docs/Network_Documentation.md)
+- Validation plan and results: [docs/validation.md](docs/validation.md)
+- Operations and troubleshooting: [docs/runbook.md](docs/runbook.md)
+- Device configurations: [configs/](configs/)
+- Evidence outputs (show commands, screenshots): [evidence/](evidence/)
 
-## Project at a glance
-- **10 VLANs + VLAN 999 (blackhole/native)** across 2 core switches
-- **Redundant default gateway:** HSRPv2 across **2 routers**
-- **Internet edge:** ASA performing NAT; routers forward default route to firewall transit networks
-- **Services:** Dual DCs (AD DS/DNS/DHCP) supporting multi-VLAN DHCP via relay
-- **Documentation-first:** diagrams, IP plan, runbooks, validation outputs
+---
 
-## What this demonstrates
-- Built **departmental segmentation** + dedicated **Servers (VLAN 80)** and **Infra Mgmt (VLAN 70)** networks.
-- Implemented **HSRPv2** with authentication + interface tracking for gateway failover.
-- Delivered **inter-VLAN routing** via 802.1Q subinterfaces (router-on-a-stick).
-- Centralized **DHCP** using `ip helper-address` to redundant DCs (DC01/DC02).
-- Implemented **LACP EtherChannel** between core switches for bandwidth + link resiliency.
-- Enforced traffic policy using **router ACLs** (Guest internet-only; restricted east-west for select VLANs).
+## What I built
+- **10 routed VLANs plus VLAN 999 (native/blackhole)** on a collapsed-core dual-switch design
+- **Redundant default gateways** using **HSRPv2** across two routers (VIP `.1` per VLAN)
+- **Inter-VLAN routing and policy** via 802.1Q subinterfaces and router ACLs
+- **Internet edge** using ASA PAT/NAT, with routers default-routing toward ASA transit networks
+- **Central services** via dual Windows DCs providing AD DS, DNS, and DHCP with `ip helper-address`
+- **Operational readiness**: validation artifacts, evidence outputs, and a troubleshooting runbook
 
-## Security controls implemented
-- **SSH-only management** and restricted management access (VLAN 70 / mgmt subnet)
-- **Unused ports** placed in **VLAN 999** and administratively shut down
-- **STP edge protections:** PortFast + BPDU Guard on access ports
-- **Port-security** (sticky MAC / violation restrict) on key access interfaces
+---
+
+## Environment and constraints
+- Single-site small enterprise simulation (about 15 users) built in a lab environment
+- Internet egress provided via upstream lab uplink; ASA outside addressing obtained via DHCP
+- Design prioritizes realistic enterprise patterns and repeatable validation over provider-grade routing complexity
 
 ---
 
 ## Topology
-**Logical topology:**  
+**Logical topology**  
 <img width="1083" height="510" alt="LOGICAL TOPOLOGY" src="https://github.com/user-attachments/assets/b6a12365-f87f-4a1d-a38d-01b7f931966a" />
-
 
 <details>
   <summary><strong>Physical topology</strong></summary>
@@ -40,43 +40,91 @@ Small-enterprise infrastructure build for **Margielos** focused on **segmentatio
 
 ---
 
-## VLANs and IP Plan (Summary)
-| VLAN | Name              | Subnet            | Default Gateway (VIP) |
-|------|-------------------|-------------------|------------------------|
-| 10   | SALES_CS          | 192.168.10.0/24   | 192.168.10.1           |
-| 20   | WAREHOUSE         | 192.168.20.0/24   | 192.168.20.1           |
-| 30   | HR_MGMT           | 192.168.30.0/24   | 192.168.30.1           |
-| 40   | IT                | 192.168.40.0/24   | 192.168.40.1           |
-| 50   | MARKETING_ECOM    | 192.168.50.0/24   | 192.168.50.1           |
-| 60   | PROD_FLOOR        | 192.168.60.0/24   | 192.168.60.1           |
-| 70   | INFRA_MGMT        | 192.168.70.0/24   | 192.168.70.1           |
-| 80   | SERVERS           | 192.168.80.0/24   | 192.168.80.1           |
-| 85   | FINANCE           | 192.168.85.0/24   | 192.168.85.1           |
-| 90   | GUEST             | 192.168.90.0/24   | 192.168.90.1           |
-| 999  | BLACKHOLE / Native| 192.168.199.0/24  | N/A                    |
+## VLANs and IP plan (summary)
+HSRP addressing convention per routed VLAN `X`:
+- VIP (default gateway): `192.168.X.1`
+- R1: `192.168.X.2`
+- R2: `192.168.X.3`
 
-Full IP conventions, DHCP scope ranges, and reservations: `docs/Network_Documentation.md`
+| VLAN | Name               | Subnet           | Default Gateway (VIP) |
+|------|--------------------|------------------|------------------------|
+| 10   | SALES_CS           | 192.168.10.0/24  | 192.168.10.1           |
+| 20   | WAREHOUSE          | 192.168.20.0/24  | 192.168.20.1           |
+| 30   | HR_MGMT            | 192.168.30.0/24  | 192.168.30.1           |
+| 40   | IT                 | 192.168.40.0/24  | 192.168.40.1           |
+| 50   | MARKETING_ECOM     | 192.168.50.0/24  | 192.168.50.1           |
+| 60   | PROD_FLOOR         | 192.168.60.0/24  | 192.168.60.1           |
+| 70   | INFRA_MGMT         | 192.168.70.0/24  | 192.168.70.1           |
+| 80   | SERVERS            | 192.168.80.0/24  | 192.168.80.1           |
+| 85   | FINANCE            | 192.168.85.0/24  | 192.168.85.1           |
+| 90   | GUEST              | 192.168.90.0/24  | 192.168.90.1           |
+| 999  | BLACKHOLE / Native | N/A              | N/A                    |
 
----
-
-## Validation
-- **HSRP:** `show standby brief` (active/standby correct per VLAN)
-- **Trunks/EtherChannel:** `show etherchannel summary`, `show interfaces trunk`
-- **Segmentation:** ping tests (Guest → blocked internal, allowed Internet)
-- **DHCP relay:** client obtains IP/gateway/DNS on each VLAN via DC01/DC02
-
-Evidence outputs: `evidence/`
+For full IP conventions, DHCP scope ranges, and routing policies, see:
+- [docs/Network_Documentation.md](docs/Network_Documentation.md)
 
 ---
 
-## Repo structure
-- `docs/Network_Documentation.md` – full design + IP plan
-- `docs/validation.md` – test plan + results
-- `docs/runbook.md` – operations & troubleshooting
-- `evidence/` – raw show-commands + screenshots
+## Security controls
+- **Segmentation policy with router ACLs**
+  - Guest VLAN is internet-only
+  - Warehouse and Production are restricted east-west, with only required service access permitted
+- **Switch hardening**
+  - Native VLAN 999 on trunks
+  - Unused ports placed in VLAN 999 and administratively shut
+  - PortFast + BPDU Guard on access ports
+  - Port-security on key access interfaces
+- **Secure administration**
+  - SSH-only management with restricted access patterns
+
+---
+
+## High availability
+- HSRPv2 per VLAN with:
+  - R1 preferred Active (priority 110, preempt enabled)
+  - R2 standby (priority 100)
+  - Upstream tracking on R1 for WAN failure failover behavior
+  - MD5 HSRP authentication on groups
+
+---
+
+## Remote access (ASA AnyConnect)
+AnyConnect remote-access VPN is documented with lab environment constraints (outside interface reachability varies due to DHCP-provided upstream addressing).
+
+Out-of-scope note: a Tailscale overlay was used during development for remote lab access continuity and is not part of the baseline network design or validation evidence.
+
+---
+
+## Validation and evidence
+Validation outputs are documented and supported by evidence artifacts, including:
+- HSRP state and failover checks
+- Trunks and EtherChannel verification
+- ACL segmentation behavior tests
+- DHCP relay behavior across VLANs
+- NAT/PAT behavior at the edge
+
+See:
+- [docs/validation.md](docs/validation.md)
+- [evidence/](evidence/)
 
 <details>
-  <summary><strong>Packet Tracer extension (in progress)</strong></summary>
+  <summary><strong>Quick “show” commands used in validation</strong></summary>
+
+- `show standby brief`
+- `show etherchannel summary`
+- `show interfaces trunk`
+- `show ip interface brief`
+- `show ip route`
+- `show access-lists`
+- `show nat` (ASA)
+
+Exact command outputs are stored in [evidence/](evidence/).
+</details>
+
+---
+## Packet Tracer extension ( in progress)
+<details>
+  <summary><strong>Show details</strong></summary>
   <br/>
 
   The baseline build was implemented on real Cisco/VM infrastructure (IOS + Windows Server + ASA).  
@@ -90,10 +138,10 @@ Evidence outputs: `evidence/`
   - Add a basic **QoS policy** (classification + prioritization) and document verification outputs.
   - Add a simulated **branch LAN** to meaningfully evaluate **OSPF** route exchange and convergence.
 
-  **Where it will live**
-  - `extension-packet-tracer/README.md` – extension overview + scope
-  - `extension-packet-tracer/docs/changes-from-baseline.md` – what’s different vs baseline
-  - `extension-packet-tracer/docs/validation.md` – test plan + results (extension)
-  - `extension-packet-tracer/packet-tracer/enterprise-network-system.pkt` – Packet Tracer file
+Where it will live:
+- [extension-packet-tracer/README.md](extension-packet-tracer/README.md)
+- [extension-packet-tracer/docs/changes-from-baseline.md](extension-packet-tracer/docs/changes-from-baseline.md)
+- [extension-packet-tracer/docs/validation.md](extension-packet-tracer/docs/validation.md)
+- [extension-packet-tracer/packet-tracer/enterprise-network-system.pkt](extension-packet-tracer/packet-tracer/enterprise-network-system.pkt)
 
 </details>
