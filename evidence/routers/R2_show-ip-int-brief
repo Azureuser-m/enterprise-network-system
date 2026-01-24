@@ -1,0 +1,20 @@
+R2#show ip int brief
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet0/0/0   192.168.254.5   YES manual up                    up
+GigabitEthernet0/0/1   unassigned      YES unset  up                    up
+Gi0/0/1.10             192.168.10.3    YES manual up                    up
+Gi0/0/1.20             192.168.20.3    YES manual up                    up
+Gi0/0/1.30             192.168.30.3    YES manual up                    up
+Gi0/0/1.40             192.168.40.3    YES manual up                    up
+Gi0/0/1.50             192.168.50.3    YES manual up                    up
+Gi0/0/1.60             192.168.60.3    YES manual up                    up
+Gi0/0/1.70             192.168.70.3    YES manual up                    up
+Gi0/0/1.80             192.168.80.3    YES manual up                    up
+Gi0/0/1.85             192.168.85.3    YES manual up                    up
+Gi0/0/1.90             192.168.90.3    YES manual up                    up
+Gi0/0/1.99             unassigned      YES unset  deleted               down
+Gi0/0/1.999            unassigned      YES unset  up                    up
+Serial0/1/0            unassigned      YES unset  down                  down
+Serial0/1/1            unassigned      YES unset  down                  down
+Service-Engine0/2/0    unassigned      YES unset  up                    up
+GigabitEthernet0       unassigned      YES unset  down                  down
