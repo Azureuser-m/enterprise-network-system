@@ -1,0 +1,24 @@
+R2#show ip access-lists
+Standard IP access list MGMT_VTY
+    10 permit 192.168.70.0, wildcard bits 0.0.0.255 (6 matches)
+    20 permit 10.10.10.0, wildcard bits 0.0.0.255
+    30 deny   any
+Extended IP access list GUEST_IN
+    10 permit udp any eq bootpc any eq bootps (1408 matches)
+    20 deny ip 192.168.90.0 0.0.0.255 192.168.0.0 0.0.255.255 (60341 matches)
+    30 permit ip 192.168.90.0 0.0.0.255 any (472217 matches)
+Extended IP access list PROD_IN
+    5 permit udp any eq bootpc any eq bootps
+    10 permit ip 192.168.60.0 0.0.0.255 192.168.80.0 0.0.0.255
+    20 deny ip 192.168.60.0 0.0.0.255 192.168.0.0 0.0.255.255 (21 matches)
+    30 permit ip 192.168.60.0 0.0.0.255 any (191663 matches)
+Extended IP access list WAREHOUSE_IN
+    5 permit udp any eq bootpc any eq bootps (3 matches)
+    10 permit ip 192.168.20.0 0.0.0.255 192.168.80.0 0.0.0.255 (266 matches)
+    20 deny ip 192.168.20.0 0.0.0.255 192.168.0.0 0.0.255.255 (98 matches)
+    30 permit ip 192.168.20.0 0.0.0.255 any (192349 matches)
+Extended IP access list sl_def_acl
+    10 deny tcp any any eq telnet
+    20 deny tcp any any eq www
+    30 deny tcp any any eq 22
+    40 permit ip any any
