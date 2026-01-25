@@ -1,0 +1,70 @@
+ASA01# show int ip brief
+Interface                  IP-Address      OK? Method Status                Protocol
+Virtual0                   127.1.0.1       YES unset  up                    up
+GigabitEthernet1/1         10.128.207.132  YES DHCP   up                    up
+GigabitEthernet1/2         192.168.254.2   YES manual up                    up
+GigabitEthernet1/3         unassigned      YES DHCP   down                  down
+GigabitEthernet1/4         unassigned      YES unset  administratively down down
+GigabitEthernet1/5         unassigned      YES unset  administratively down down
+GigabitEthernet1/6         unassigned      YES unset  administratively down down
+GigabitEthernet1/7         unassigned      YES unset  administratively down down
+GigabitEthernet1/8         unassigned      YES unset  administratively down down
+Internal-Control1/1        127.0.1.1       YES unset  up                    up
+Internal-Data1/1           unassigned      YES unset  up                    down
+Internal-Data1/2           unassigned      YES unset  up                    up
+Internal-Data1/3           unassigned      YES unset  up                    up
+Internal-Data1/4           169.254.1.1     YES unset  up                    up
+Management1/1              192.168.80.5    YES unset  down                  down
+ASA01#
+ASA01# show route
+
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, V - VPN
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, + - replicated route
+Gateway of last resort is 10.128.207.1 to network 0.0.0.0
+
+S*       0.0.0.0 0.0.0.0 [1/0] via 10.128.207.1, outside
+C        10.128.207.0 255.255.255.0 is directly connected, outside
+L        10.128.207.132 255.255.255.255 is directly connected, outside
+S        192.168.0.0 255.255.0.0 [1/0] via 192.168.254.1, inside
+C        192.168.254.0 255.255.255.252 is directly connected, inside
+L        192.168.254.2 255.255.255.255 is directly connected, inside
+
+ASA01# show nat
+
+Auto NAT Policies (Section 2)
+1 (inside) to (outside) source dynamic OBJ_INSIDE_ALL interface
+    translate_hits = 176356, untranslate_hits = 44393
+2 (inside) to (outside-backup) source dynamic OBJ_INSIDE_ALL_BACKUP interface
+    translate_hits = 0, untranslate_hits = 0
+ASA01# show access-list
+access-list cached ACL log flows: total 0, denied 0 (deny-flow-max 4096)
+            alert-interval 300
+access-list VPN_SPLIT; 10 elements; name hash: 0x9b4eca23
+access-list VPN_SPLIT line 1 standard permit 192.168.10.0 255.255.255.0 (hitcnt=0) 0xb1cf7eaa
+access-list VPN_SPLIT line 2 standard permit 192.168.20.0 255.255.255.0 (hitcnt=0) 0xc34b4b80
+access-list VPN_SPLIT line 3 standard permit 192.168.30.0 255.255.255.0 (hitcnt=0) 0x5e6adff8
+access-list VPN_SPLIT line 4 standard permit 192.168.40.0 255.255.255.0 (hitcnt=0) 0x6bc66707
+access-list VPN_SPLIT line 5 standard permit 192.168.50.0 255.255.255.0 (hitcnt=0) 0xa8921edb
+access-list VPN_SPLIT line 6 standard permit 192.168.60.0 255.255.255.0 (hitcnt=0) 0x0952cf18
+access-list VPN_SPLIT line 7 standard permit 192.168.70.0 255.255.255.0 (hitcnt=0) 0x41abb2f4
+access-list VPN_SPLIT line 8 standard permit 192.168.80.0 255.255.255.0 (hitcnt=0) 0x295eb7bf
+access-list VPN_SPLIT line 9 standard permit 192.168.85.0 255.255.255.0 (hitcnt=0) 0x72d26796
+access-list VPN_SPLIT line 10 standard permit 192.168.90.0 255.255.255.0 (hitcnt=0) 0x438f2809
+ASA01#
+ASA01#
+ASA01#
+ASA01# show run | include crypto
+crypto ipsec security-association pmtu-aging infinite
+crypto ca trustpool policy
+ASA01# show crypto ikev2 sa
+
+There are no IKEv2 SAs
+ASA01# show vpn-sessiondb anyconnect
+INFO: There are presently no active sessions of the type specified
+
+ASA01#
