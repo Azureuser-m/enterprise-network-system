@@ -1,0 +1,40 @@
+ASA02# SHOW INT IP BRIEF
+Interface                  IP-Address      OK? Method Status                Protocol
+Virtual0                   127.1.0.1       YES unset  up                    up
+GigabitEthernet1/1         10.128.207.140  YES DHCP   up                    up
+GigabitEthernet1/2         192.168.254.6   YES manual up                    up
+GigabitEthernet1/3         unassigned      YES unset  administratively down down
+GigabitEthernet1/4         unassigned      YES unset  administratively down down
+GigabitEthernet1/5         unassigned      YES unset  administratively down down
+GigabitEthernet1/6         unassigned      YES unset  administratively down down
+GigabitEthernet1/7         unassigned      YES unset  administratively down down
+GigabitEthernet1/8         unassigned      YES unset  administratively down down
+Internal-Control1/1        127.0.1.1       YES unset  up                    up
+Internal-Data1/1           unassigned      YES unset  down                  down
+Internal-Data1/2           unassigned      YES unset  up                    up
+Internal-Data1/3           unassigned      YES unset  up                    up
+Internal-Data1/4           169.254.1.1     YES unset  up                    up
+Management1/1              unassigned      YES unset  administratively down down
+ASA02# SHOW ROUTE
+
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, V - VPN
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, + - replicated route
+Gateway of last resort is 10.128.207.1 to network 0.0.0.0
+
+S*       0.0.0.0 0.0.0.0 [1/0] via 10.128.207.1, outside
+C        10.128.207.0 255.255.255.0 is directly connected, outside
+L        10.128.207.140 255.255.255.255 is directly connected, outside
+S        192.168.0.0 255.255.0.0 [1/0] via 192.168.254.5, inside
+C        192.168.254.4 255.255.255.252 is directly connected, inside
+L        192.168.254.6 255.255.255.255 is directly connected, inside
+
+ASA02# SHOW NAT
+
+Auto NAT Policies (Section 2)
+1 (inside) to (outside) source dynamic INSIDE-NET interface
+    translate_hits = 16450, untranslate_hits = 4999
