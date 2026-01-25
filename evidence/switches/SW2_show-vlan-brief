@@ -1,0 +1,23 @@
+SW2#show vlan brief
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active
+10   SALES_CS                         active
+20   WAREHOUSE                        active    Fa0/7, Fa0/8
+30   HR_MGMT                          active
+40   IT                               active
+50   MARKETING_ECOM                   active    Fa0/5, Fa0/6
+60   PROD_FLOOR                       active    Fa0/9, Fa0/10
+70   INFRA_MGMT                       active    Fa0/14
+80   SERVERS                          active    Fa0/3
+85   FINANCE                          active    Fa0/11
+90   GUEST                            active    Fa0/4
+999  BLACKHOLE                        active    Fa0/12, Fa0/13, Fa0/15, Fa0/16
+                                                Fa0/17, Fa0/18, Fa0/19, Fa0/20
+                                                Fa0/21, Fa0/22, Fa0/23, Fa0/24
+                                                Gi0/2
+1002 fddi-default                     act/unsup
+1003 token-ring-default               act/unsup
+1004 fddinet-default                  act/unsup
+1005 trnet-default                    act/unsup
