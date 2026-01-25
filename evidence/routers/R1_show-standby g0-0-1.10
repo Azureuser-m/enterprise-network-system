@@ -1,0 +1,32 @@
+R1#show standby  gigabitEthernet0/1.10
+GigabitEthernet0/1.10 - Group 10 (version 2)
+  State is Active
+    5 state changes, last state change 02:03:03
+  Virtual IP address is 192.168.10.1
+  Active virtual MAC address is <REDACTED>
+    Local virtual MAC address is <REDACTED> (v2 default)
+  Hello time 3 sec, hold time 10 sec
+    Next hello sent in 1.776 secs
+  Authentication MD5, key-string
+  Preemption enabled
+  Active router is local
+  Standby router is 192.168.10.3, priority 100 (expires in 10.768 sec)
+  Priority 110 (configured 110)
+    Track object 1 state Up decrement 20
+  Group name is "hsrp-Gi0/1.10-10" (default)
+R1#show standby gigabitEthernet0/1.80
+GigabitEthernet0/1.80 - Group 80 (version 2)
+  State is Active
+    5 state changes, last state change 02:03:08
+  Virtual IP address is 192.168.80.1
+  Active virtual MAC address is <REDACTED>
+    Local virtual MAC address is <REDACTED> (v2 default)
+  Hello time 3 sec, hold time 10 sec
+    Next hello sent in 0.368 secs
+  Authentication MD5, key-string
+  Preemption enabled
+  Active router is local
+  Standby router is 192.168.80.3, priority 100 (expires in 10.000 sec)
+  Priority 110 (configured 110)
+    Track object 1 state Up decrement 20
+  Group name is "hsrp-Gi0/1.80-80" (default)
