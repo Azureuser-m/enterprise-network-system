@@ -1,0 +1,16 @@
+R1#show track
+Track 1
+  Interface GigabitEthernet0/0 line-protocol
+  Line protocol is Up
+    2 changes, last change 02:03:32
+  Tracked by:
+    HSRP GigabitEthernet0/1.85 85
+    HSRP GigabitEthernet0/1.90 90
+    HSRP GigabitEthernet0/1.10 10
+    HSRP GigabitEthernet0/1.20 20
+    HSRP GigabitEthernet0/1.30 30
+    HSRP GigabitEthernet0/1.40 40
+    HSRP GigabitEthernet0/1.50 50
+    HSRP GigabitEthernet0/1.60 60
+    HSRP GigabitEthernet0/1.70 70
+    HSRP GigabitEthernet0/1.80 80
