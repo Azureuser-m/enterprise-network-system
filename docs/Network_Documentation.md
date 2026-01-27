@@ -87,9 +87,7 @@ The network uses a **collapsed core** with L2 switching at the core and L3 gatew
 ---
 
 ### 2.2 Logical topology diagram
-> Place images under `docs/images/` for stable links.
-
-![Logical Topology](./images/logical-topology.png)
+![Logical Topology](./images/LOGICAL-TOPOLOGY.png)
 
 ---
 
