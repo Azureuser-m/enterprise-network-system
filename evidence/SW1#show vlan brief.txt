@@ -21,20 +21,3 @@ VLAN Name                             Status    Ports
 1003 token-ring-default               act/unsup
 1004 fddinet-default                  act/unsup
 1005 trnet-default                    act/unsup
-SW1#show interfaces trunk
-
-Port        Mode             Encapsulation  Status        Native vlan
-Gi0/1       on               802.1q         trunking      999
-Po1         on               802.1q         trunking      999
-
-Port        Vlans allowed on trunk
-Gi0/1       10,20,30,40,50,60,70,80,85,90
-Po1         10,20,30,40,50,60,70,80,85,90
-
-Port        Vlans allowed and active in management domain
-Gi0/1       10,20,30,40,50,60,70,80,85,90
-Po1         10,20,30,40,50,60,70,80,85,90
-
-Port        Vlans in spanning tree forwarding state and not pruned
-Gi0/1       10,20,30,40,50,60,70,80,85,90
-Po1         10,20,30,40,50,60,70,80,85,90
