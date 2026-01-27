@@ -105,7 +105,7 @@ Detailed port-by-port cabling / patching is recorded in the **runbook**:
 ---
 
 ### 2.4 Physical topology diagram
-![Physical Topology](./images/physical-topology.png)
+![Physical Topology](./images/Physical-Topology.png)
 
 ---
 
