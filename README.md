@@ -1,6 +1,6 @@
-# Enterprise Network & Systems (Cisco IOS + ASA)
+# Enterprise Network Infrastructure (Cisco IOS + ASA)
 
-Self-directed small enterprise infrastructure build for **Margielos**, focused on segmentation, high availability, secure administration, and repeatable validation.
+Self-directed small enterprise network infrastructure build for **Margielos**, focused on segmentation, high availability, secure administration, and repeatable validation.
 
 ## Documentation
 - Full design and implementation notes: [docs/Network_Documentation.md](docs/Network_Documentation.md)
