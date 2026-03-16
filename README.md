@@ -1,4 +1,4 @@
-# Enterprise Network & Systems (Cisco IOS + ASA + Windows Server)
+# Enterprise Network & Systems (Cisco IOS + ASA)
 
 Self-directed small enterprise infrastructure build for **Margielos**, focused on segmentation, high availability, secure administration, and repeatable validation.
 
